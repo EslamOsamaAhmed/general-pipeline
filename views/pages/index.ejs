@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body>
+  <style>
+    .btn-deploy,
+    .btn-deploy:hover,
+    .btn-deploy:focus {
+      background-color: #2e8c9f;
+      color: white;
+      border-color: #2e8c9f;
+    }
+
+    .text-deploy {
+      color: #2e8c9f
+    }
+
+    .page-header,
+    #emptyText,
+    .headerText {
+      background: -webkit-linear-gradient(#cbcbcb, #2e8c9f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    #emptyText {
+      font-size: 1.5rem;
+      top: 80px;
+    }
+
+    footer {
+      width: 100%;
+      bottom: 0;
+      position: fixed;
+      left: 0;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #333;
+    }
+  </style>
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
+
+  <div>
+
+    <div class="m-5">
+
+      <div class="col-12 bg-light mb-5 rounded">
+        <div style="height: 200px;  overflow-y: scroll; overflow-x: hidden;">
+          <div class="spinner-border text-deploy d-none m-3" role="status" id="loader" style="float: right;">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div class="m-3" style="float: right;font-weight: bold;color: #79c5d7;">
+            <%= time %>
+          </div>
+          <% for(var i=0; i<output.length; i++) { %>
+            <p style="line-height: 2;"></p>
+            <%= output[i] %>
+              </p>
+              <% } %>
+
+                <% if(output.length=="" ) { %>
+                  <div class="col-12 text-center" role="status" id="emptyText">
+                    <p>Deployment Logs are shown here </p>
+                  </div>
+                  <% } %>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="col-12 row">
+          <div class="col-3 mb-5 text-center">
+            <button class="btn btn-deploy" onclick="execFun('/tali-website')">
+              Tali Website
+            </button>
+          </div>
+          <div class="col-3 mb-5 text-center">
+            <button class="btn btn-deploy" onclick="execFun('/nl-website')">NL Website</button>
+          </div>
+          <div class="col-3 mb-5 text-center">
+            <button class="btn btn-deploy" onclick="execFun('/nl-backend')">NL Back-End</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/tali-admin')">Tali Admin Panel</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/nl-admin')">NL Admin Panel</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/api-gateway')">API Gateway</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/pm-auth')">PM - Auth</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/pm-subs')">PM - Subs</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/pm-payment')">PM - Payment</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/qu-website')">QU Website</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/qu-backend')">QU Back-End</button>
+          </div>
+          <div class="col-3 mb-5  text-center">
+            <button class="btn btn-deploy" onclick="execFun('/qu-frontend')">QU Front-End</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+
+  <script>
+    var inProcess = false;
+    window.onbeforeunload = function () {
+      if (!inProcess)
+        return "Write something clever here...";
+    }
+
+    function execFun(url) {
+      if (!inProcess) {
+        inProcess = true;
+        var dots = window.setInterval(function () {
+          var wait = document.getElementById("emptyText");
+          if (wait.innerHTML.length > 3)
+            wait.innerHTML = "";
+          else
+            wait.innerHTML += ".";
+        }, 500);
+        document.getElementById("loader").classList.remove("d-none");
+
+        window.location.href = url;
+      } else {
+        alert("There is a deployment Process is working wait until it is finished")
+      }
+    }
+  </script>
+</body>
+
+</html>
